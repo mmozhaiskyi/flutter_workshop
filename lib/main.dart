@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_workshop/di/providers.dart';
 import 'package:flutter_workshop/presentation/home/home_widget.dart';
+import 'package:flutter_workshop/presentation/point_details/point_details_widget.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: HomeWidget.route,
         routes: {
-          HomeWidget.route: (_) => HomeWidget()
+          HomeWidget.route: (_) => HomeWidget(),
+          PointDetailsWidget.route: (_) => PointDetailsWidget()
         },
       ),
     );

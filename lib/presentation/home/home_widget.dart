@@ -6,6 +6,7 @@ import 'package:flutter_workshop/domain/repository/point_repository.dart';
 import 'package:flutter_workshop/presentation/home/home_bloc.dart';
 import 'package:flutter_workshop/presentation/home/home_event.dart';
 import 'package:flutter_workshop/presentation/home/home_state.dart';
+import 'package:flutter_workshop/presentation/point_details/point_details_widget.dart';
 import 'package:provider/provider.dart';
 
 class HomeWidget extends StatelessWidget {
@@ -17,15 +18,23 @@ class HomeWidget extends StatelessWidget {
     return BlocProvider(
       builder: (_) => HomeBloc(pointRepository)..add(FetchPoints()),
       child: Scaffold(
-        appBar: _buildAppBar(),
+        appBar: _buildAppBar(context),
         body: _buildBody(context),
       ),
     );
   }
 
-  Widget _buildAppBar() {
+  Widget _buildAppBar(BuildContext context) {
     return AppBar(
       title: Text('Home'),
+      actions: <Widget>[
+        RaisedButton(
+          child: Text('Map'),
+          onPressed: () {
+            Navigator.of(context).pushNamed(PointDetailsWidget.route);
+          },
+        )
+      ],
     );
   }
 
