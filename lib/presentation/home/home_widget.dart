@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_workshop/domain/model/point.dart';
+import 'package:flutter_workshop/domain/repository/point_repository.dart';
 import 'package:flutter_workshop/presentation/home/home_bloc.dart';
 import 'package:flutter_workshop/presentation/home/home_event.dart';
 import 'package:flutter_workshop/presentation/home/home_state.dart';
+import 'package:provider/provider.dart';
 
 class HomeWidget extends StatelessWidget {
   static const route = '/';
 
   @override
   Widget build(BuildContext context) {
+    final PointRepository pointRepository = Provider.of(context);
     return BlocProvider(
-      builder: (_) => HomeBloc()..add(FetchPoints()),
+      builder: (_) => HomeBloc(pointRepository)..add(FetchPoints()),
       child: Scaffold(
         appBar: _buildAppBar(),
         body: _buildBody(context),
@@ -52,7 +55,7 @@ class HomeWidget extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: Padding(
             padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-            child: Text(point.name, style: TextStyle(fontSize: 16),),
+            child: Text(point.name ?? '', style: TextStyle(fontSize: 16),),
           ),
         ),
         Row(
@@ -66,7 +69,7 @@ class HomeWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(left: 8, right: 16, top: 8),
                 child: Text(
-                  point.address, style: TextStyle(fontSize: 13),
+                  point.address ?? 'Unknown', style: TextStyle(fontSize: 13),
                 ),
               ),
             ),
