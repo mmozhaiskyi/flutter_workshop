@@ -18,9 +18,18 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         initialRoute: HomeWidget.route,
-        routes: {
-          HomeWidget.route: (_) => HomeWidget(),
-          PointDetailsWidget.route: (_) => PointDetailsWidget()
+        onGenerateRoute: (settings) {
+          // ignore: missing_return
+          final widget = () {
+            switch (settings.name) {
+              case HomeWidget.route: return HomeWidget();
+              case PointDetailsWidget.route: {
+                final point = settings.arguments;
+                return PointDetailsWidget(point);
+              }
+            }
+          };
+          return MaterialPageRoute(builder: (_) => widget());
         },
       ),
     );
