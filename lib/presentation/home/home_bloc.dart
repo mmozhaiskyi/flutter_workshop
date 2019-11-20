@@ -30,11 +30,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-
   @override
   Future<Function> close() {
     _locationSubscribtion?.cancel();
-    super.close();
+    return super.close();
   }
 
   void _observeLocation() {
