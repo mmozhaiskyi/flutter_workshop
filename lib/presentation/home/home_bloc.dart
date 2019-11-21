@@ -13,7 +13,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeBloc(this._pointRepository, this._locationProvider);
 
-  StreamSubscription _locationSubscribtion;
+  StreamSubscription _locationSubscription;
 
   @override
   HomeState get initialState => Loading();
@@ -32,12 +32,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   @override
   Future<Function> close() {
-    _locationSubscribtion?.cancel();
+    _locationSubscription?.cancel();
     return super.close();
   }
 
   void _observeLocation() {
-    _locationSubscribtion = _locationProvider.observe().listen((location) {
+    _locationSubscription = _locationProvider.observe().listen((location) {
       add(LocationChanged(location));
     });
   }
