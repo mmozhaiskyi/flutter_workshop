@@ -15,5 +15,5 @@ class PointApiModel {
 
   factory PointApiModel.fromJson(json) => _$PointApiModelFromJson(json);
   
-  Point toModel() => Point(id, name, location.toModel(), location.address);
+  Point toModel() => Point(id, name, location.toModel(), location.address, location.distance);
 }

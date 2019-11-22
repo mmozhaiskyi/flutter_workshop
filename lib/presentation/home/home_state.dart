@@ -6,6 +6,8 @@ class Loading extends HomeState {}
 
 class Content extends HomeState {
   final List<Point> points;
+  final Location userLocation;
+  final int searchAreaRadius;
 
-  Content(this.points);
+  Content(this.points, this.userLocation, this.searchAreaRadius);
 }

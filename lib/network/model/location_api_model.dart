@@ -8,8 +8,9 @@ class LocationApiModel {
   final double lat;
   final double lng;
   final String address;
+  final int distance;
 
-  LocationApiModel(this.lat, this.lng, this.address);
+  LocationApiModel(this.lat, this.lng, this.address, this.distance);
 
   factory LocationApiModel.fromJson(json) => _$LocationApiModelFromJson(json);
 

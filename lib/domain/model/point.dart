@@ -10,6 +10,7 @@ class Point {
   final String name;
   final Location location;
   final String address;
+  final int distance;
 
-  Point(this.id, this.name, this.location, this.address);
+  Point(this.id, this.name, this.location, this.address, this.distance);
 }
