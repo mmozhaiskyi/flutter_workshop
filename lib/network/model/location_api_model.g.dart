@@ -11,6 +11,7 @@ LocationApiModel _$LocationApiModelFromJson(Map<String, dynamic> json) {
     (json['lat'] as num)?.toDouble(),
     (json['lng'] as num)?.toDouble(),
     json['address'] as String,
+    json['distance'] as int,
   );
 }
 
@@ -19,4 +20,5 @@ Map<String, dynamic> _$LocationApiModelToJson(LocationApiModel instance) =>
       'lat': instance.lat,
       'lng': instance.lng,
       'address': instance.address,
+      'distance': instance.distance,
     };

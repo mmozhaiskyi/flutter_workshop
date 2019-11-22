@@ -11,14 +11,15 @@ class ApiService {
 
   ApiService(this._config);
 
-  Future<List<PointApiModel>> getNearbyPoints(double lat, double lng, String query) async {
+  Future<List<PointApiModel>> getNearbyPoints(double lat, double lng, String query, int radius) async {
     final qParams = <String, String>{
       'client_id': _config.clientId,
       'client_secret': _config.clientSecret,
       'v': '20180323',
       'll': '$lat,$lng',
       'query': query,
-      'limit': '100'
+      'limit': '100',
+      'radius': '$radius'
     };
 
     final url = Uri.https(_config.baseUrl, '/v2/venues/explore', qParams);
