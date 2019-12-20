@@ -35,7 +35,6 @@ class PointsListWidget extends StatelessWidget {
   }
 
   Widget _buildPointItem(BuildContext context, Point point) {
-    final PointsBloc bloc = Provider.of(context);
     return GestureDetector(
       onTap: () => Navigator.of(context)
           .pushNamed(PointDetailsWidget.route, arguments: point),
@@ -70,7 +69,8 @@ class PointsListWidget extends StatelessWidget {
               icon: Icon(_getFavoriteIcon(point)),
               onPressed: () {
                 point.isFavorite = !point.isFavorite;
-                bloc.add(PointFavSelected(point));
+                BlocProvider.of<PointsBloc>(context)
+                    .add(PointFavSelected(point));
               },
             ),
           ],
