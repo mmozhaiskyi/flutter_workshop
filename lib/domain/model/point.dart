@@ -11,6 +11,8 @@ class Point {
   final Location location;
   final String address;
   final int distance;
+  bool isFavorite;
 
-  Point(this.id, this.name, this.location, this.address, this.distance);
+  Point(this.id, this.name, this.location, this.address, this.distance,
+      {this.isFavorite = false});
 }

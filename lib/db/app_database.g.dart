@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'database.dart';
+part of 'app_database.dart';
 
 // **************************************************************************
 // FloorGenerator
@@ -80,7 +80,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `PointDBModel` (`id` TEXT, `name` TEXT, `lat` REAL, `lng` REAL, `address` TEXT, `distance` INTEGER, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `PointEntity` (`id` TEXT, `name` TEXT, `lat` REAL, `long` REAL, `address` TEXT, `distance` INTEGER, `isFavorite` INTEGER, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -95,18 +95,34 @@ class _$AppDatabase extends AppDatabase {
 
 class _$PointDao extends PointDao {
   _$PointDao(this.database, this.changeListener)
-      : _queryAdapter = QueryAdapter(database),
-        _pointDBModelInsertionAdapter = InsertionAdapter(
+      : _queryAdapter = QueryAdapter(database, changeListener),
+        _pointEntityInsertionAdapter = InsertionAdapter(
             database,
-            'PointDBModel',
-            (PointDBModel item) => <String, dynamic>{
+            'PointEntity',
+            (PointEntity item) => <String, dynamic>{
                   'id': item.id,
                   'name': item.name,
                   'lat': item.lat,
-                  'lng': item.lng,
+                  'long': item.long,
                   'address': item.address,
-                  'distance': item.distance
-                });
+                  'distance': item.distance,
+                  'isFavorite': item.isFavorite ? 1 : 0
+                },
+            changeListener),
+        _pointEntityUpdateAdapter = UpdateAdapter(
+            database,
+            'PointEntity',
+            ['id'],
+            (PointEntity item) => <String, dynamic>{
+                  'id': item.id,
+                  'name': item.name,
+                  'lat': item.lat,
+                  'long': item.long,
+                  'address': item.address,
+                  'distance': item.distance,
+                  'isFavorite': item.isFavorite ? 1 : 0
+                },
+            changeListener);
 
   final sqflite.DatabaseExecutor database;
 
@@ -114,25 +130,34 @@ class _$PointDao extends PointDao {
 
   final QueryAdapter _queryAdapter;
 
-  static final _pointDBModelMapper = (Map<String, dynamic> row) => PointDBModel(
+  static final _pointEntityMapper = (Map<String, dynamic> row) => PointEntity(
       row['id'] as String,
       row['name'] as String,
       row['lat'] as double,
-      row['lng'] as double,
+      row['long'] as double,
       row['address'] as String,
-      row['distance'] as int);
+      row['distance'] as int,
+      (row['isFavorite'] as int) != 0);
 
-  final InsertionAdapter<PointDBModel> _pointDBModelInsertionAdapter;
+  final InsertionAdapter<PointEntity> _pointEntityInsertionAdapter;
+
+  final UpdateAdapter<PointEntity> _pointEntityUpdateAdapter;
 
   @override
-  Future<List<PointDBModel>> selectAll() async {
-    return _queryAdapter.queryList('SELECT * FROM Point',
-        mapper: _pointDBModelMapper);
+  Stream<List<PointEntity>> observePoints() {
+    return _queryAdapter.queryListStream('SELECT * FROM PointEntity',
+        tableName: 'PointEntity', mapper: _pointEntityMapper);
   }
 
   @override
-  Future<void> insert(PointDBModel pointDBModel) async {
-    await _pointDBModelInsertionAdapter.insert(
-        pointDBModel, sqflite.ConflictAlgorithm.replace);
+  Future<void> insert(List<PointEntity> points) async {
+    await _pointEntityInsertionAdapter.insertList(
+        points, sqflite.ConflictAlgorithm.ignore);
+  }
+
+  @override
+  Future<void> update(PointEntity entity) async {
+    await _pointEntityUpdateAdapter.update(
+        entity, sqflite.ConflictAlgorithm.abort);
   }
 }

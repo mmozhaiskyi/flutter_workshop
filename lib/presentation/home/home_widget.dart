@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_workshop/db/database_container.dart';
 import 'package:flutter_workshop/domain/repository/point_repository.dart';
 import 'package:flutter_workshop/domain/util/location_provider.dart';
 import 'package:flutter_workshop/presentation/home/home_bloc.dart';
 import 'package:flutter_workshop/presentation/home/home_event.dart';
 import 'package:flutter_workshop/presentation/home/home_state.dart';
 import 'package:flutter_workshop/presentation/home/map_widget.dart';
-import 'package:flutter_workshop/presentation/home/points_list_widget.dart';
+import 'package:flutter_workshop/presentation/home/points_list/points_list_widget.dart';
 import 'package:provider/provider.dart';
 
 enum _HomeType { list, map }
@@ -22,15 +23,16 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeState extends State<HomeWidget> {
-
   var _type = _HomeType.map;
 
   @override
   Widget build(BuildContext context) {
     final PointRepository pointRepository = Provider.of(context);
     final LocationProvider locationProvider = Provider.of(context);
+    final DatabaseContainer dbContainer = Provider.of(context);
     return BlocProvider(
-      builder: (_) => HomeBloc(pointRepository, locationProvider)..add(FetchPoints()),
+      builder: (_) => HomeBloc(pointRepository, locationProvider, dbContainer)
+        ..add(FetchPoints()),
       child: Scaffold(
         appBar: _buildAppBar(context),
         body: _buildBody(context),
@@ -49,8 +51,7 @@ class _HomeState extends State<HomeWidget> {
               setState(() {
                 _type = type;
               });
-            }
-        )
+            })
       ],
     );
   }
@@ -65,7 +66,7 @@ class _HomeState extends State<HomeWidget> {
           return IndexedStack(
             index: _type.index,
             children: <Widget>[
-              PointsListWidget(state.points),
+              PointsListWidget(),
               MapWidget(state.points, state.userLocation, state.searchAreaRadius),
             ],
           );
